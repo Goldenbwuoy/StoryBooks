@@ -3,7 +3,6 @@ const router = express.Router()
 const { ensureAuth } = require('../middleware/auth')
 
 const Story = require('../models/Story')
-const { findById } = require('../models/Story')
 
 //@desc     Show add page
 //@route    GET /stories/add
@@ -36,6 +35,27 @@ router.get('/', ensureAuth, async (req, res) => {
     } catch (error) {
         console.log(error)
         return res.render('error/500')
+    }
+})
+
+//@desc     Show single story
+//@route    GET /stories/:id
+router.get('/:id', ensureAuth, async (req, res) => {
+    try {
+        let story = await Story.findById(req.params.id)
+            .populate('user')
+            .lean()
+
+        if (!story) {
+            return res.render('error/404')
+        }
+
+        res.render('stories/show', {
+            story
+        })
+    } catch (error) {
+        console.log(error)
+        return render('error/404')
     }
 })
 
