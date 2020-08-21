@@ -11,12 +11,13 @@ const StorySchema = new mongoose.Schema({
         required: true
     },
     status: {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User'
+        type: String,
+        default: 'public',
+        enum: ['public', 'private']
     },
     user: {
-        type: String, 
-        required: true
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User'
     },
     createdAt: {
         type: Date,
